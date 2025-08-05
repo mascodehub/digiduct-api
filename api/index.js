@@ -1,7 +1,7 @@
-const logger = require("./utils/logger");
-const constant = require("./utils/constant");
-const middleware = require("./utils/middleware");
-const routes = require("./routes/init");
+const logger = require("../utils/logger");
+const constant = require("../utils/constant");
+const middleware = require("../utils/middleware");
+const routes = require("../routes/init");
 
 const cors = require("cors");
 const express = require("express");

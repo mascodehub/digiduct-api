@@ -28,10 +28,14 @@ app.use(
    middleware.printForwardRequestResponse
  );
 
-const host = process.env.HOST || "127.0.0.1";
-const port = process.env.PORT || 3000;
+module.exports = (req, res) => {
+  app(req, res);
+};
 
-app.listen(port, () => {
-  logger.verbose(`Listening at ${host}:${port}`);
-  logger.verbose("=========KICK END=========");
-});
+// const host = process.env.HOST || "127.0.0.1";
+// const port = process.env.PORT || 3000;
+
+// app.listen(port, () => {
+//   logger.verbose(`Listening at ${host}:${port}`);
+//   logger.verbose("=========KICK END=========");
+// });

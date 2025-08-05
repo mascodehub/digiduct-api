@@ -1,4 +1,4 @@
-const logger = require("../utils/logger");
+// const logger = require("../utils/logger");
 const generalResp = require("../utils/httpResp");
 const { v4: uuidv4 } = require("uuid");
 const product = require("../services/product");
@@ -25,7 +25,7 @@ exports.listData = async (req, res, next) => {
 
     res.locals.status = error.rc || 500;
     res.locals.response = JSON.stringify(response);
-    logger.error(JSON.stringify(res.locals));
+    // logger.error(JSON.stringify(res.locals));
   }
 
   next();

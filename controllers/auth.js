@@ -1,4 +1,4 @@
-const logger = require("../utils/logger");
+// const logger = require("../utils/logger");
 const generalResp = require("../utils/httpResp");
 const auth = require("../services/auth");
 
@@ -24,7 +24,7 @@ exports.login = async (req, res, next) => {
 
     res.locals.status = error.rc || 500;
     res.locals.response = JSON.stringify(response);
-    logger.error(JSON.stringify(res.locals));
+    // logger.error(JSON.stringify(res.locals));
   }
 
   next();

@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require("uuid");
-const logger = require("./logger");
+// const logger = require("./logger");
 
 async function checkGrants(req, res, next) {
   let tokenHeader = req.headers.authorization;
@@ -84,7 +84,7 @@ async function checkGrants(req, res, next) {
       }
     }
 
-    logger.info("Invalid Grants #1");
+    // logger.info("Invalid Grants #1");
 
     return res;
   }
@@ -146,11 +146,11 @@ async function recordHit(req, res, next) {
   res.locals.mid = mid;
   res.locals.clientIp = clientIp;
 
-  logger.http(req.originalUrl, {
-    service: "USER API",
-    mid,
-    ip: clientIp || "",
-  });
+  // logger.http(req.originalUrl, {
+  //   service: "USER API",
+  //   mid,
+  //   ip: clientIp || "",
+  // });
 
   next();
 }

@@ -10,16 +10,16 @@ datasource db {
 }
 
 model admin {
-  id      Int       @id @default(autoincrement())
-  name    String    @db.VarChar
-  email   String    @db.VarChar
-  phone   String    @db.VarChar
-  add_by  String    @db.VarChar
-  add_on  DateTime  @db.Timestamp(6)
-  edit_by String?   @db.VarChar
-  edit_on DateTime? @db.Timestamp(6)
-  del_by  String?   @db.VarChar
-  del_on  DateTime? @db.Timestamp(6)
+  id       Int       @id @default(autoincrement())
+  username String    @db.VarChar
+  email    String    @db.VarChar
+  phone    String    @db.VarChar
+  add_by   String    @db.VarChar
+  add_on   DateTime  @db.Timestamp(6)
+  edit_by  String?   @db.VarChar
+  edit_on  DateTime? @db.Timestamp(6)
+  del_by   String?   @db.VarChar
+  del_on   DateTime? @db.Timestamp(6)
 
   @@schema("digiduct")
 }

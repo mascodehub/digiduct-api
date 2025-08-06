@@ -43,7 +43,7 @@ exports.create = async (params) => {
       name: params.name,
       description: params.description,
       image_path: params.image_path,
-      add_by: params.add_by,
+      add_by: params.action_by,
       add_on: new Date(),
     },
   });
@@ -57,8 +57,22 @@ exports.update = async (params) => {
       name: params.name,
       description: params.description,
       image_path: params.image_path,
-      edit_by: params.edit_by,
+      edit_by: params.action_by,
       edit_on: new Date(),
+    },
+    where: {
+      id: params.id,
+    },
+  });
+
+  return result;
+};
+
+exports.delete = async (params) => {
+  let result = await prisma.product.update({
+    data: {
+      delete_by: params.action_by,
+      delete_on: new Date(),
     },
     where: {
       id: params.id,

@@ -1,7 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-exports.getAdmin = async (req, res) => {
+exports.getAdmin = async (params) => {
   let result = await prisma.admin.findFirst({
     select: {
       id: true,
@@ -9,14 +9,14 @@ exports.getAdmin = async (req, res) => {
       password: true,
     },
     where: {
-      username: req.body.username,
+      username: params.username,
       del_on: null,
     },
   });
   return result;
 };
 
-exports.getProfileAdmin = async (req, res) => {
+exports.getProfileAdmin = async (params) => {
   let result = await prisma.admin.findFirst({
     select: {
       username: true,
@@ -24,7 +24,7 @@ exports.getProfileAdmin = async (req, res) => {
       phone: true,
     },
     where: {
-      token: req.params.token,
+      token: params.token,
       del_on: null,
     },
   });

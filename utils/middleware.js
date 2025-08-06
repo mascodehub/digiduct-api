@@ -1,8 +1,8 @@
-const { v4: uuidv4 } = require("uuid");
 const jwt = require("jsonwebtoken");
+const auth = require("../services/auth");
 
 function checkGrants(requiredGrants = []) {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -17,7 +17,7 @@ function checkGrants(requiredGrants = []) {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      req.user = decoded;
+      req.token = token;
 
       const userGrants = decoded.grants || decoded.scopes || [];
 
@@ -31,6 +31,12 @@ function checkGrants(requiredGrants = []) {
           rd: "Forbidden - insufficient grants",
         });
       }
+      let params = {
+        token: token,
+      };
+
+      let getAuth = await auth.getProfileAdmin(params);
+      req.username = getAuth.username;
 
       next();
     } catch (err) {
@@ -99,7 +105,7 @@ async function recordHit(req, res, next) {
   console.log(req.method);
   console.log(req.originalUrl);
   if (req.method == "GET") {
-    console.log(req.params);
+    console.log(req.query);
   } else {
     console.log(req.body);
   }

@@ -8,7 +8,11 @@ exports.login = async (req, res, next) => {
   let response;
 
   try {
-    let dataAdmin = await auth.getAdmin(req, res);
+    let params = {
+      username: req.body.username,
+    };
+
+    let dataAdmin = await auth.getAdmin(params);
 
     var passwordIsValid = bcrypt.compareSync(
       req.body.password,
@@ -24,7 +28,11 @@ exports.login = async (req, res, next) => {
         }
       );
 
-      await auth.updateTokenAdmin({ id: dataAdmin.id, token: jwtToken });
+      params = {
+        id: dataAdmin.id,
+        token: jwtToken,
+      };
+      await auth.updateTokenAdmin(params);
 
       response = {
         rc: generalResp.HTTP_OK,
@@ -62,7 +70,11 @@ exports.profile = async (req, res, next) => {
   let response;
 
   try {
-    let dataAdmin = await auth.getProfileAdmin(req, res);
+    let params = {
+      token: req.token,
+    };
+    
+    let dataAdmin = await auth.getProfileAdmin(params);
 
     if (!dataAdmin) {
       response = {

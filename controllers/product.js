@@ -75,8 +75,7 @@ exports.createData = async (req, res, next) => {
     let params = {
       name: req.body.name,
       description: req.body.description,
-      image_path: req.body.image_path, // temp
-      add_by: "superadmin", // temp
+      action_by: req.username, 
     };
 
     let result = await product.create(params);
@@ -108,7 +107,7 @@ exports.updateData = async (req, res, next) => {
       id: parseInt(req.body.id),
       name: req.body.name,
       description: req.body.description,
-      edit_by: "superadmin", // temp
+      action_by: req.username,
     };
 
     let result = await product.update(params);
@@ -136,10 +135,17 @@ exports.updateData = async (req, res, next) => {
 exports.deleteData = async (req, res, next) => {
   let response;
   try {
+    let params = {
+      id: parseInt(req.body.id),
+      action_by: req.username,
+    };
+
+    let result = await product.delete(params);
+
     response = {
       rc: generalResp.HTTP_OK,
-      rd: "DELETE",
-      data: [],
+      rd: "OK",
+      data: result,
     };
     res.locals.response = JSON.stringify(response);
   } catch (error) {

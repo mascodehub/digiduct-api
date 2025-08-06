@@ -81,3 +81,96 @@ exports.delete = async (params) => {
 
   return result;
 };
+
+exports.packageList = async (params) => {
+  let result = await prisma.product_package.findMany({
+    select: {
+      id: true,
+      product_id: true,
+      name: true,
+      period: true,
+      price: true,
+      stock: true,
+      status: true,
+    },
+    where: {
+      product_id: params.product_id,
+      del_on: null,
+    },
+    take: params.limit,
+    skip: params.offset,
+    orderBy: { name: "asc" },
+  });
+
+  return result;
+};
+
+exports.packageDetail = async (params) => {
+  let result = await prisma.product_package.findFirst({
+    select: {
+      id: true,
+      product_id: true,
+      name: true,
+      period: true,
+      price: true,
+      stock: true,
+      status: true,
+    },
+    where: {
+      id: params.id,
+      del_on: null,
+    },
+  });
+
+  return result;
+};
+
+exports.packageCreate = async (params) => {
+  let result = await prisma.product_package.create({
+    data: {
+      product_id: params.product_id,
+      name: params.name,
+      period: params.period,
+      price: params.price,
+      stock: params.stock,
+      status: params.status,
+      add_by: params.action_by,
+      add_on: new Date(),
+    },
+  });
+
+  return result;
+};
+
+exports.packageUpdate = async (params) => {
+  let result = await prisma.product_package.update({
+    data: {
+      name: params.name,
+      period: params.period,
+      price: params.price,
+      stock: params.stock,
+      status: params.status,
+      edit_by: params.action_by,
+      edit_on: new Date(),
+    },
+    where: {
+      id: params.id,
+    },
+  });
+
+  return result;
+};
+
+exports.packageDelete = async (params) => {
+  let result = await prisma.product_package.update({
+    data: {
+      del_by: params.action_by,
+      del_on: new Date(),
+    },
+    where: {
+      id: params.id,
+    },
+  });
+
+  return result;
+};

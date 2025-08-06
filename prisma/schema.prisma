@@ -75,7 +75,7 @@ model product_category {
 }
 
 model product_package {
-  id                   Int                    @id(map: "product_package_pk")
+  id                   Int                    @id @default(autoincrement())
   product_id           Int
   name                 String                 @db.VarChar
   period               Int

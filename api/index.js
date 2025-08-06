@@ -29,11 +29,18 @@ app.use(
 );
 
 app.use(
-   "/product",
-   routes.product,
-   middleware.recordHit,
-   middleware.printForwardRequestResponse
- );
+  "/product",
+  routes.product,
+  middleware.recordHit,
+  middleware.printForwardRequestResponse
+);
+
+app.use(
+  "/category",
+  routes.category,
+  middleware.recordHit,
+  middleware.printForwardRequestResponse
+);
 
 module.exports = (req, res) => {
   app(req, res);

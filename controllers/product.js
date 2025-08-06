@@ -76,7 +76,7 @@ exports.createData = async (req, res, next) => {
       name: req.body.name,
       description: req.body.description,
       image_path: req.body.image_path, // temp
-      add_by: 'superadmin', // temp
+      add_by: "superadmin", // temp
     };
 
     let result = await product.create(params);
@@ -108,7 +108,7 @@ exports.updateData = async (req, res, next) => {
       id: parseInt(req.body.id),
       name: req.body.name,
       description: req.body.description,
-      edit_by: 'superadmin', // temp
+      edit_by: "superadmin", // temp
     };
 
     let result = await product.update(params);

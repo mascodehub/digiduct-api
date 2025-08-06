@@ -6,7 +6,11 @@ const { uploadFileLocal } = require("../utils/file");
 
 const upload = uploadFileLocal();
 
-router.get("/", middleware.checkParams(["file"]), controllers.file.uploadProduct);
+router.get(
+  "/",
+  middleware.checkParams(["file"]),
+  controllers.file.uploadProduct
+);
 
 router.post(
   "/upload/product",

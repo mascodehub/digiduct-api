@@ -9,7 +9,7 @@ exports.uploadProduct = async (req, res, next) => {
 
     let params = {
       id: parseInt(req.body.id),
-      image_path: upload.optimized, 
+      image_path: upload.optimized,
     };
 
     let result = await file.updateProduct(params);

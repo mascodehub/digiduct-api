@@ -16,9 +16,13 @@ exports.login = async (req, res, next) => {
     );
 
     if (dataAdmin && passwordIsValid) {
-      var jwtToken = jwt.sign({grants:'SUPERADMIN'}, process.env.JWT_SECRET, {
-        expiresIn: "1h",
-      });
+      var jwtToken = jwt.sign(
+        { grants: "SUPERADMIN" },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1h",
+        }
+      );
 
       await auth.updateTokenAdmin({ id: dataAdmin.id, token: jwtToken });
 

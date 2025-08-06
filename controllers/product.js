@@ -105,10 +105,9 @@ exports.updateData = async (req, res, next) => {
   let response;
   try {
     let params = {
-      id: req.body.id,
+      id: parseInt(req.body.id),
       name: req.body.name,
       description: req.body.description,
-      image_path: req.body.image_path, // temp
       edit_by: 'superadmin', // temp
     };
 

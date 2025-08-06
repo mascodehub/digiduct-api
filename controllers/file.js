@@ -2,7 +2,7 @@ const generalResp = require("../utils/httpResp");
 const file = require("../services/file");
 const { uploadFile } = require("../utils/file");
 
-exports.upload = async (req, res, next) => {
+exports.uploadProduct = async (req, res, next) => {
   let response;
   try {
     let upload = await uploadFile(req.file.buffer);

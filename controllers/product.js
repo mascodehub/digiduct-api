@@ -1,14 +1,18 @@
 // const logger = require("../utils/logger");
 const generalResp = require("../utils/httpResp");
-const { v4: uuidv4 } = require("uuid");
 const product = require("../services/product");
 
 exports.listData = async (req, res, next) => {
   let response;
-  
+
   try {
-    let result = await product.findAll();
-    
+    let params = {
+      limit: parseInt(req.query.limit),
+      offset: parseInt(req.query.offset),
+    };
+
+    let result = await product.list(params);
+
     response = {
       rc: generalResp.HTTP_OK,
       rd: "SUCCESS",
@@ -17,6 +21,8 @@ exports.listData = async (req, res, next) => {
 
     res.locals.response = JSON.stringify(response);
   } catch (error) {
+    console.error(error);
+
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",
@@ -25,19 +31,60 @@ exports.listData = async (req, res, next) => {
 
     res.locals.status = error.rc || 500;
     res.locals.response = JSON.stringify(response);
-    // logger.error(JSON.stringify(res.locals));
   }
 
   next();
 };
 
-exports.postData = async (req, res, next) => {
+exports.detailData = async (req, res, next) => {
   let response;
+
   try {
+    let params = {
+      id: parseInt(req.query.id),
+    };
+
+    let result = await product.detail(params);
+
     response = {
       rc: generalResp.HTTP_OK,
-      rd: "POST",
-      data: [],
+      rd: "OK",
+      data: result,
+    };
+
+    res.locals.response = JSON.stringify(response);
+  } catch (error) {
+    console.error(error);
+
+    response = {
+      rc: error.rc || 500,
+      rd: error.rd || "Some error occurred while retrieving data.",
+      data: null,
+    };
+
+    res.locals.status = error.rc || 500;
+    res.locals.response = JSON.stringify(response);
+  }
+
+  next();
+};
+
+exports.createData = async (req, res, next) => {
+  let response;
+  try {
+    let params = {
+      name: req.body.name,
+      description: req.body.description,
+      image_path: req.body.image_path, // temp
+      add_by: 'superadmin', // temp
+    };
+
+    let result = await product.create(params);
+
+    response = {
+      rc: generalResp.HTTP_OK,
+      rd: "OK",
+      data: result,
     };
     res.locals.response = JSON.stringify(response);
   } catch (error) {
@@ -49,19 +96,28 @@ exports.postData = async (req, res, next) => {
 
     res.locals.status = error.rc || 500;
     res.locals.response = JSON.stringify(response);
-    logger.error(JSON.stringify(res.locals));
   }
 
   next();
 };
 
-exports.putData = async (req, res, next) => {
+exports.updateData = async (req, res, next) => {
   let response;
   try {
+    let params = {
+      id: req.body.id,
+      name: req.body.name,
+      description: req.body.description,
+      image_path: req.body.image_path, // temp
+      edit_by: 'superadmin', // temp
+    };
+
+    let result = await product.update(params);
+
     response = {
       rc: generalResp.HTTP_OK,
-      rd: "PUT",
-      data: [],
+      rd: "OK",
+      data: result,
     };
     res.locals.response = JSON.stringify(response);
   } catch (error) {
@@ -73,7 +129,6 @@ exports.putData = async (req, res, next) => {
 
     res.locals.status = error.rc || 500;
     res.locals.response = JSON.stringify(response);
-    logger.error(JSON.stringify(res.locals));
   }
 
   next();
@@ -97,7 +152,6 @@ exports.deleteData = async (req, res, next) => {
 
     res.locals.status = error.rc || 500;
     res.locals.response = JSON.stringify(response);
-    logger.error(JSON.stringify(res.locals));
   }
 
   next();

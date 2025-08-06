@@ -22,6 +22,13 @@ app.use(
 );
 
 app.use(
+  "/file",
+  routes.file,
+  middleware.recordHit,
+  middleware.printForwardRequestResponse
+);
+
+app.use(
    "/product",
    routes.product,
    middleware.recordHit,

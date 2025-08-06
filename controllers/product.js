@@ -139,7 +139,7 @@ exports.deleteData = async (req, res, next) => {
       id: parseInt(req.body.id),
       action_by: req.username,
     };
-
+    
     let result = await product.delete(params);
 
     response = {

@@ -23,6 +23,7 @@ router.post(
   ],
   controllers.product.createData
 );
+
 router.put(
   "/",
   [
@@ -31,6 +32,7 @@ router.put(
   ],
   controllers.product.updateData
 );
+
 router.delete(
   "/",
   [

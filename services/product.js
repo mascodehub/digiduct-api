@@ -71,8 +71,8 @@ exports.update = async (params) => {
 exports.delete = async (params) => {
   let result = await prisma.product.update({
     data: {
-      delete_by: params.action_by,
-      delete_on: new Date(),
+      del_by: params.action_by,
+      del_on: new Date(),
     },
     where: {
       id: params.id,

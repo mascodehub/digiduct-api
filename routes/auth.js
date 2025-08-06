@@ -8,10 +8,20 @@ router.get(
   [middleware.checkGrants(constant.GRANTS_ROLE), middleware.checkParams([])],
   controllers.auth.profile
 );
+
 router.post(
   "/",
   middleware.checkParams(["username", "password"]),
   controllers.auth.login
+);
+
+router.post(
+  "/change-password",
+  [
+    middleware.checkGrants(constant.GRANTS_ROLE),
+    middleware.checkParams(["username", "password"]),
+  ],
+  controllers.auth.changePassword
 );
 
 module.exports = router;

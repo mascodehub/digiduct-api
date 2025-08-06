@@ -7,6 +7,13 @@ exports.uploadProduct = async (req, res, next) => {
   try {
     let upload = await uploadFile(req.file.buffer);
 
+    if (!upload) {
+      throw {
+        rc: generalResp.HTTP_BADREQUEST,
+        rd: "Failed Upload!",
+      };
+    }
+
     let params = {
       id: parseInt(req.body.id),
       image_path: upload.optimized,

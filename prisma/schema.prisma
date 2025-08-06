@@ -10,7 +10,7 @@ datasource db {
 
 model admin {
   id       Int       @id @default(autoincrement())
-  username String    @db.VarChar
+  username String    @unique(map: "admin_unique") @db.VarChar
   password String    @db.VarChar
   token    String    @db.VarChar
   email    String    @db.VarChar

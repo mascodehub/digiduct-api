@@ -42,3 +42,16 @@ exports.updateTokenAdmin = async (params) => {
   });
   return result;
 };
+
+exports.changePasswordAdmin = async (params) => {
+  let result = await prisma.admin.update({
+    where: {
+      username: params.username,
+    },
+    data: {
+      password: params.password,
+      token: 'changepassword',
+    },
+  });
+  return result;
+};

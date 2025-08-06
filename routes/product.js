@@ -95,4 +95,57 @@ router.delete(
   controllers.product.packageDelete
 );
 
+router.get(
+  "/category",
+  middleware.checkParams([]),
+  controllers.product.categoryList
+);
+
+router.get(
+  "/category/detail",
+  middleware.checkParams(["id"]),
+  controllers.product.categoryDetail
+);
+
+router.post(
+  "/category",
+  [
+    middleware.checkGrants(constant.GRANTS_ROLE),
+    middleware.checkParams([
+      "product_id",
+      "name",
+      "period",
+      "price",
+      "stock",
+      "status",
+    ]),
+  ],
+  controllers.product.categoryCreate
+);
+
+router.put(
+  "/category",
+  [
+    middleware.checkGrants(constant.GRANTS_ROLE),
+    middleware.checkParams([
+      "id",
+      "name",
+      "period",
+      "price",
+      "stock",
+      "status",
+    ]),
+  ],
+  controllers.product.categoryUpdate
+);
+
+router.delete(
+  "/category",
+  [
+    middleware.checkGrants(constant.GRANTS_ROLE),
+    middleware.checkParams(["id"]),
+  ],
+  controllers.product.categoryDelete
+);
+
 module.exports = router;

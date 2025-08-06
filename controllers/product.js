@@ -253,7 +253,7 @@ exports.packageCreate = async (req, res, next) => {
     res.locals.response = JSON.stringify(response);
   } catch (error) {
     console.error(error);
-    
+
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",
@@ -290,7 +290,7 @@ exports.packageUpdate = async (req, res, next) => {
     res.locals.response = JSON.stringify(response);
   } catch (error) {
     console.error(error);
-    
+
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",
@@ -313,6 +313,184 @@ exports.packageDelete = async (req, res, next) => {
     };
 
     let result = await product.packageDelete(params);
+
+    response = {
+      rc: generalResp.HTTP_OK,
+      rd: "OK",
+      data: result,
+    };
+    res.locals.response = JSON.stringify(response);
+  } catch (error) {
+    response = {
+      rc: error.rc || 500,
+      rd: error.rd || "Some error occurred while retrieving data.",
+      result: null,
+    };
+
+    res.locals.status = error.rc || 500;
+    res.locals.response = JSON.stringify(response);
+  }
+
+  next();
+};
+
+exports.categoryList = async (req, res, next) => {
+  let response;
+
+  try {
+    let params = {
+      limit: parseInt(req.query.limit),
+      offset: parseInt(req.query.offset),
+    };
+
+    let result = await product.categoryList(params);
+
+    result = result.map((item) => ({
+      product_id: item.product_id,
+      product_name: item.product.name,
+      category_id: item.category_id,
+      category_name: item.category.name,
+    }));
+
+    response = {
+      rc: generalResp.HTTP_OK,
+      rd: "SUCCESS",
+      data: result,
+    };
+
+    res.locals.response = JSON.stringify(response);
+  } catch (error) {
+    console.error(error);
+
+    response = {
+      rc: error.rc || 500,
+      rd: error.rd || "Some error occurred while retrieving data.",
+      data: null,
+    };
+
+    res.locals.status = error.rc || 500;
+    res.locals.response = JSON.stringify(response);
+  }
+
+  next();
+};
+
+exports.categoryDetail = async (req, res, next) => {
+  let response;
+
+  try {
+    let params = {
+      id: parseInt(req.query.id),
+    };
+
+    let result = await product.categoryDetail(params);
+
+    response = {
+      rc: generalResp.HTTP_OK,
+      rd: "OK",
+      data: result,
+    };
+
+    res.locals.response = JSON.stringify(response);
+  } catch (error) {
+    console.error(error);
+
+    response = {
+      rc: error.rc || 500,
+      rd: error.rd || "Some error occurred while retrieving data.",
+      data: null,
+    };
+
+    res.locals.status = error.rc || 500;
+    res.locals.response = JSON.stringify(response);
+  }
+
+  next();
+};
+
+exports.categoryCreate = async (req, res, next) => {
+  let response;
+  try {
+    let params = {
+      product_id: parseInt(req.body.product_id),
+      name: req.body.name,
+      period: parseInt(req.body.period),
+      price: parseInt(req.body.price),
+      stock: parseInt(req.body.stock),
+      status: parseInt(req.body.status),
+      action_by: req.username,
+    };
+
+    let result = await product.categoryCreate(params);
+
+    response = {
+      rc: generalResp.HTTP_OK,
+      rd: "OK",
+      data: result,
+    };
+    res.locals.response = JSON.stringify(response);
+  } catch (error) {
+    console.error(error);
+
+    response = {
+      rc: error.rc || 500,
+      rd: error.rd || "Some error occurred while retrieving data.",
+      result: null,
+    };
+
+    res.locals.status = error.rc || 500;
+    res.locals.response = JSON.stringify(response);
+  }
+
+  next();
+};
+
+exports.categoryUpdate = async (req, res, next) => {
+  let response;
+  try {
+    let params = {
+      id: parseInt(req.body.id),
+      name: req.body.name,
+      period: parseInt(req.body.period),
+      price: parseInt(req.body.price),
+      stock: parseInt(req.body.stock),
+      status: parseInt(req.body.status),
+      action_by: req.username,
+    };
+
+    let result = await product.categoryUpdate(params);
+
+    response = {
+      rc: generalResp.HTTP_OK,
+      rd: "OK",
+      data: result,
+    };
+    res.locals.response = JSON.stringify(response);
+  } catch (error) {
+    console.error(error);
+
+    response = {
+      rc: error.rc || 500,
+      rd: error.rd || "Some error occurred while retrieving data.",
+      result: null,
+    };
+
+    res.locals.status = error.rc || 500;
+    res.locals.response = JSON.stringify(response);
+  }
+
+  next();
+};
+
+exports.categoryDelete = async (req, res, next) => {
+  let response;
+  try {
+    let params = {
+      id: parseInt(req.body.id),
+      action_by: req.username,
+    };
+
+    let result = await product.categoryDelete(params);
 
     response = {
       rc: generalResp.HTTP_OK,

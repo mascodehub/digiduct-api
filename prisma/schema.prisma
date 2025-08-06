@@ -40,24 +40,6 @@ model category {
   @@schema("digiduct")
 }
 
-/// This model has been renamed to 'packageModel' during introspection, because the original name 'package' is reserved.
-model packageModel {
-  id                   Int                    @id @default(autoincrement())
-  name                 String                 @db.VarChar
-  period               Int
-  add_by               String                 @db.VarChar
-  add_on               DateTime               @db.Timestamp(6)
-  edit_by              String?                @db.VarChar
-  edit_on              DateTime?              @db.Timestamp(6)
-  del_by               String?                @db.VarChar
-  del_on               DateTime?              @db.Timestamp(6)
-  product_package      product_package[]
-  product_transactions product_transactions[]
-
-  @@map("package")
-  @@schema("digiduct")
-}
-
 model product {
   id                   Int                    @id @default(autoincrement())
   name                 String                 @db.VarChar
@@ -93,45 +75,47 @@ model product_category {
 }
 
 model product_package {
-  product_id   Int
-  package_id   Int
-  price        Int
-  stock        Int
-  status       Int?         @default(1)
-  add_by       String       @db.VarChar
-  add_on       DateTime     @db.Timestamp(6)
-  edit_by      String?      @db.VarChar
-  edit_on      DateTime?    @db.Timestamp(6)
-  del_by       String?      @db.VarChar
-  del_on       DateTime?    @db.Timestamp(6)
-  packageModel packageModel @relation(fields: [package_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  product      product      @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id                   Int                    @id(map: "product_package_pk")
+  product_id           Int
+  name                 String                 @db.VarChar
+  period               Int
+  price                Int
+  stock                Int
+  status               Int?                   @default(1)
+  add_by               String                 @db.VarChar
+  add_on               DateTime               @db.Timestamp(6)
+  edit_by              String?                @db.VarChar
+  edit_on              DateTime?              @db.Timestamp(6)
+  del_by               String?                @db.VarChar
+  del_on               DateTime?              @db.Timestamp(6)
+  product              product                @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  product_transactions product_transactions[]
 
-  @@unique([product_id, package_id], map: "product_package_product_id_package_id_idx")
+  @@unique([product_id, id], map: "product_package_product_id_id_idx")
   @@schema("digiduct")
 }
 
 model product_transactions {
-  id           Int          @id @default(autoincrement())
+  id           Int             @id @default(autoincrement())
   user_id      Int
   product_id   Int
   package_id   Int
   category_id  Int
-  price        String       @db.VarChar
-  status       String       @default("PENDING") @db.VarChar
-  prove_path   String?      @db.VarChar
-  review       String?      @db.VarChar
+  price        String          @db.VarChar
+  status       String          @default("PENDING") @db.VarChar
+  prove_path   String?         @db.VarChar
+  review       String?         @db.VarChar
   rating       Int?
-  add_by       String       @db.VarChar
-  add_on       DateTime     @default(dbgenerated("'2025-08-04 15:33:14.379892'::timestamp without time zone")) @db.Timestamp(6)
-  edit_by      String?      @db.VarChar
-  edit_on      DateTime?    @db.Timestamp(6)
-  del_by       String?      @db.VarChar
-  del_on       DateTime?    @db.Timestamp(6)
-  category     category     @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  packageModel packageModel @relation(fields: [package_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  product      product      @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  user         user         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  add_by       String          @db.VarChar
+  add_on       DateTime        @default(dbgenerated("'2025-08-04 15:33:14.379892'::timestamp without time zone")) @db.Timestamp(6)
+  edit_by      String?         @db.VarChar
+  edit_on      DateTime?       @db.Timestamp(6)
+  del_by       String?         @db.VarChar
+  del_on       DateTime?       @db.Timestamp(6)
+  category     category        @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  packageModel product_package @relation(fields: [package_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  product      product         @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  user         user            @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@schema("digiduct")
 }

@@ -1,36 +1,46 @@
 const { v4: uuidv4 } = require("uuid");
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 
 function checkGrants(requiredGrants = []) {
   return (req, res, next) => {
-    const authHeader = req.headers.authorization
+    const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ message: 'Unauthorized' })
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({
+        rc: 401,
+        rd: "Unauthorized",
+      });
     }
 
-    const token = authHeader.split(' ')[1]
+    const token = authHeader.split(" ")[1];
 
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET) // sesuaikan secret/key kamu
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      req.user = decoded
+      req.user = decoded;
 
-      const userGrants = decoded.grants || decoded.scopes || [] // sesuaikan dengan payload
+      const userGrants = decoded.grants || decoded.scopes || [];
 
-      const hasAllGrants = requiredGrants.every(grant => userGrants.includes(grant))
+      const hasAllGrants = requiredGrants.every((grant) =>
+        userGrants.includes(grant)
+      );
 
       if (!hasAllGrants) {
-        return res.status(403).json({ message: 'Forbidden - insufficient grants' })
+        return res.status(403).json({
+          rc: 403,
+          rd: "Forbidden - insufficient grants",
+        });
       }
 
-      next()
+      next();
     } catch (err) {
-      return res.status(401).json({ message: 'Invalid or expired token' })
+      return res.status(401).json({
+        rc: 401,
+        rd: "Invalid or expired token",
+      });
     }
-  }
+  };
 }
-
 
 function checkParams(requiredKeys = []) {
   return function (req, res, next) {
@@ -88,14 +98,14 @@ async function recordHit(req, res, next) {
   console.log(clientIp);
   console.log(req.method);
   console.log(req.originalUrl);
-  if(req.method == 'GET'){
+  if (req.method == "GET") {
     console.log(req.params);
-  }else{
+  } else {
     console.log(req.body);
   }
-  
+
   // console.log(res.locals);
-  
+
   // logger.http(req.originalUrl, {
   //   service: "USER API",
   //   mid,

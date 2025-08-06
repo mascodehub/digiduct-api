@@ -3,10 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  schemas           = ["digiduct"]
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["digiduct"]
 }
 
 model admin {

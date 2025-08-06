@@ -1,8 +1,5 @@
-const AVAILABLE_PATH = [
-  "/",
-  "/auth"
-];
+const GRANTS_ROLE = ["SUPERADMIN"];
 
 module.exports = {
-  AVAILABLE_PATH,
+  GRANTS_ROLE,
 };

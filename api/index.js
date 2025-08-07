@@ -42,6 +42,13 @@ app.use(
   middleware.printForwardRequestResponse
 );
 
+app.use(
+  "/article",
+  routes.article,
+  middleware.recordHit,
+  middleware.printForwardRequestResponse
+);
+
 module.exports = (req, res) => {
   app(req, res);
 };

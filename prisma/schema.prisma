@@ -21,6 +21,7 @@ model admin {
   edit_on  DateTime? @db.Timestamp(6)
   del_by   String?   @db.VarChar
   del_on   DateTime? @db.Timestamp(6)
+  article  article[]
 
   @@schema("digiduct")
 }
@@ -129,6 +130,67 @@ model user {
   edit_on DateTime? @db.Timestamp(6)
   del_by  String?   @db.VarChar
   del_on  DateTime? @db.Timestamp(6)
+
+  @@schema("digiduct")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model article {
+  id               BigInt            @id(map: "post_pkey") @default(autoincrement())
+  title            String?           @db.VarChar(255)
+  slug             String?           @unique(map: "post_slug_key") @db.VarChar(255)
+  content          String?
+  thumbnail        String?           @db.VarChar(255)
+  status           String?           @db.VarChar(20)
+  published_on     DateTime?         @db.Timestamp(6)
+  author_id        Int?
+  category_id      BigInt?
+  meta_title       String?           @db.VarChar(255)
+  meta_description String?           @db.VarChar(255)
+  meta_keywords    String?           @db.VarChar(255)
+  og_title         String?           @db.VarChar(255)
+  og_description   String?           @db.VarChar(255)
+  og_image         String?           @db.VarChar(255)
+  add_on           DateTime?         @db.Timestamp(6)
+  edit_on          DateTime?         @db.Timestamp(6)
+  del_on           DateTime?         @db.Timestamp(6)
+  admin            admin?            @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_author_id_fkey")
+  article_category article_category? @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_category_id_fkey")
+  article_tag      article_tag[]     @ignore
+
+  @@schema("digiduct")
+}
+
+model article_category {
+  id      BigInt    @id @default(autoincrement())
+  name    String?   @db.VarChar(100)
+  slug    String?   @unique @db.VarChar(100)
+  add_on  DateTime? @db.Timestamp(6)
+  edit_on DateTime? @db.Timestamp(6)
+  article article[]
+
+  @@schema("digiduct")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model article_tag {
+  article_id BigInt?
+  tag_id     BigInt?
+  article    article? @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tag        tag?     @relation(fields: [tag_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@ignore
+  @@schema("digiduct")
+}
+
+model tag {
+  id          BigInt        @id @default(autoincrement())
+  name        String?       @db.VarChar(50)
+  slug        String?       @unique @db.VarChar(50)
+  add_on      DateTime?     @db.Timestamp(6)
+  edit_on     DateTime?     @db.Timestamp(6)
+  article_tag article_tag[] @ignore
 
   @@schema("digiduct")
 }

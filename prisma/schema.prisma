@@ -43,7 +43,7 @@ model product {
   id               Int                @id @default(autoincrement())
   name             String             @db.VarChar
   description      String?
-  image_path       String             @db.VarChar
+  image_path       String?            @db.VarChar
   add_by           String             @db.VarChar
   add_on           DateTime           @db.Timestamp(6)
   edit_by          String?            @db.VarChar

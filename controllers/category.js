@@ -1,16 +1,17 @@
 // const logger = require("../utils/logger");
 const generalResp = require("../utils/httpResp");
 const category = require("../services/category");
+const { convertByType, detectType } = require("../utils/datatype");
 
 exports.listData = async (req, res, next) => {
   let response;
 
   try {
     let params = {
-      limit: parseInt(req.query.limit),
-      offset: parseInt(req.query.offset),
+      limit: convertByType(detectType(req.query.limit), req.query.limit),
+      offset: convertByType(detectType(req.query.offset), req.query.offset),
     };
-
+    
     let result = await category.list(params);
 
     response = {
@@ -41,7 +42,7 @@ exports.detailData = async (req, res, next) => {
 
   try {
     let params = {
-      id: parseInt(req.query.id),
+      id: convertByType(detectType(req.query.id), req.query.id),
     };
 
     let result = await category.detail(params);
@@ -73,8 +74,8 @@ exports.createData = async (req, res, next) => {
   let response;
   try {
     let params = {
-      name: req.body.name,
-      description: req.body.description,
+      name: convertByType(detectType(req.body.name), req.body.name),
+      description: convertByType(detectType(req.body.description), req.body.description),
       action_by: req.username, 
     };
 
@@ -104,9 +105,9 @@ exports.updateData = async (req, res, next) => {
   let response;
   try {
     let params = {
-      id: parseInt(req.body.id),
-      name: req.body.name,
-      description: req.body.description,
+      id: convertByType(detectType(req.body.id), req.body.id),
+      name: convertByType(detectType(req.body.name), req.body.name),
+      description: convertByType(detectType(req.body.description), req.body.description),
       action_by: req.username,
     };
 
@@ -136,7 +137,7 @@ exports.deleteData = async (req, res, next) => {
   let response;
   try {
     let params = {
-      id: parseInt(req.body.id),
+      id: convertByType(detectType(req.body.id), req.body.id),
       action_by: req.username,
     };
     

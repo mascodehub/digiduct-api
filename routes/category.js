@@ -5,13 +5,16 @@ const constant = require("../utils/constant");
 
 router.get(
   "/",
-  middleware.checkParams(["limit", "offset"]),
+  middleware.checkParams([
+    { limit: ["int-string", "integer"] },
+    { offset: ["int-string", "integer"] },
+  ]),
   controllers.category.listData
 );
 
 router.get(
   "/detail",
-  middleware.checkParams(["id"]),
+  middleware.checkParams([{ id: ["int-string", "integer"] }]),
   controllers.category.detailData
 );
 
@@ -19,7 +22,7 @@ router.post(
   "/",
   [
     middleware.checkGrants(constant.GRANTS_ROLE),
-    middleware.checkParams(["name"]),
+    middleware.checkParams([{ name: ["string"] }]),
   ],
   controllers.category.createData
 );
@@ -28,7 +31,10 @@ router.put(
   "/",
   [
     middleware.checkGrants(constant.GRANTS_ROLE),
-    middleware.checkParams(["id", "name"]),
+    middleware.checkParams([
+      { id: ["int-string", "integer"] },
+      { name: ["string"] },
+    ]),
   ],
   controllers.category.updateData
 );
@@ -37,7 +43,7 @@ router.delete(
   "/",
   [
     middleware.checkGrants(constant.GRANTS_ROLE),
-    middleware.checkParams(["id"]),
+    middleware.checkParams([{ id: ["int-string", "integer"] }]),
   ],
   controllers.category.deleteData
 );

@@ -14,7 +14,10 @@ router.get(
 
 router.post(
   "/upload/product",
-  [middleware.checkGrants(constant.GRANTS_ROLE), middleware.checkParams([])],
+  [
+    middleware.checkGrants(constant.GRANTS_ROLE),
+    middleware.checkParams([{ product_id: ["int-string", "integer"] }]),
+  ],
   upload.single("file"),
   controllers.file.uploadProduct
 );

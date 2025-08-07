@@ -5,13 +5,13 @@ const constant = require("../utils/constant");
 
 router.get(
   "/profile",
-  [middleware.checkGrants(constant.GRANTS_ROLE), middleware.checkParams([])],
+  middleware.checkGrants(constant.GRANTS_ROLE),
   controllers.auth.profile
 );
 
 router.post(
   "/",
-  middleware.checkParams(["username", "password"]),
+  middleware.checkParams([{ username: ["string"] }, { password: ["string"] }]),
   controllers.auth.login
 );
 
@@ -19,7 +19,10 @@ router.post(
   "/change-password",
   [
     middleware.checkGrants(constant.GRANTS_ROLE),
-    middleware.checkParams(["username", "password"]),
+    middleware.checkParams([
+      { username: ["string"] },
+      { password: ["string"] },
+    ]),
   ],
   controllers.auth.changePassword
 );

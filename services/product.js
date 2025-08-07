@@ -42,7 +42,6 @@ exports.create = async (params) => {
     data: {
       name: params.name,
       description: params.description,
-      image_path: params.image_path,
       add_by: params.action_by,
       add_on: new Date(),
     },

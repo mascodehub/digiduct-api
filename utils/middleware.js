@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const auth = require("../services/auth");
+const { detectType } = require("./datatype");
 
 function checkGrants(requiredGrants = []) {
   return async (req, res, next) => {
@@ -58,19 +59,43 @@ function checkParams(requiredKeys = []) {
     }
 
     try {
-      const missing = requiredKeys.filter((key) => {
-        return (
-          req.query?.[key] === undefined &&
-          req.body?.[key] === undefined &&
-          req.params?.[key] === undefined
-        );
-      });
+      const missing = [];
+      const wrongType = [];
 
-      if (missing.length > 0) {
+      for (const keyObj of requiredKeys) {
+        const key = Object.keys(keyObj)[0];
+        const allowedTypes = keyObj[key];
+
+        const value =
+          req.query?.[key] !== undefined
+            ? req.query[key]
+            : req.body?.[key] !== undefined
+            ? req.body[key]
+            : req.params?.[key];
+
+        if (value === undefined) {
+          missing.push(key);
+        } else {
+          const detectedType = detectType(value);
+          if (!allowedTypes.includes(detectedType)) {
+            wrongType.push({
+              param: key,
+              value,
+              type: detectedType,
+              allowed: allowedTypes,
+            });
+          }
+        }
+      }
+
+      if (missing.length > 0 || wrongType.length > 0) {
         return res.status(400).json({
           rc: 400,
-          rd: "Missing required parameters",
-          errors: missing,
+          rd: "Missing or invalid parameters",
+          errors: {
+            missing,
+            wrongType,
+          },
         });
       }
 

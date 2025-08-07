@@ -1,6 +1,6 @@
 // const logger = require("../utils/logger");
 const generalResp = require("../utils/httpResp");
-const { detectType, convertByType } = require("../utils/datatype");
+const { convertByType } = require("../utils/datatype");
 const product = require("../services/product");
 
 exports.list = async (req, res, next) => {
@@ -8,8 +8,8 @@ exports.list = async (req, res, next) => {
 
   try {
     let params = {
-      limit: convertByType(detectType(req.query.limit), req.query.limit),
-      offset: convertByType(detectType(req.query.offset), req.query.offset),
+      limit: convertByType(req.query.limit),
+      offset: convertByType(req.query.offset),
     };
 
     let result = await product.list(params);
@@ -42,7 +42,7 @@ exports.detail = async (req, res, next) => {
 
   try {
     let params = {
-      id: convertByType(detectType(req.query.id), req.query.id),
+      id: convertByType(req.query.id),
     };
 
     let result = await product.detail(params);
@@ -74,8 +74,8 @@ exports.create = async (req, res, next) => {
   let response;
   try {
     let params = {
-      name: convertByType(detectType(req.body.name), req.body.name),
-      description: convertByType(detectType(req.body.description), req.body.description),
+      name: convertByType(req.body.name),
+      description: convertByType(req.body.description),
       action_by: req.username,
     };
 
@@ -105,9 +105,9 @@ exports.update = async (req, res, next) => {
   let response;
   try {
     let params = {
-      id: convertByType(detectType(req.body.id), req.body.id),
-      name: convertByType(detectType(req.body.name), req.body.name),
-      description: convertByType(detectType(req.body.description), req.body.description),
+      id: convertByType(req.body.id),
+      name: convertByType(req.body.name),
+      description: convertByType(req.body.description),
       action_by: req.username,
     };
 
@@ -137,7 +137,7 @@ exports.delete = async (req, res, next) => {
   let response;
   try {
     let params = {
-      id: convertByType(detectType(req.body.id), req.body.id),
+      id: convertByType(req.body.id),
       action_by: req.username,
     };
 
@@ -168,9 +168,9 @@ exports.packageList = async (req, res, next) => {
 
   try {
     let params = {
-      product_id: convertByType(detectType(req.query.product_id), req.query.product_id),
-      limit: convertByType(detectType(req.query.limit), req.query.limit),
-      offset: convertByType(detectType(req.query.offset), req.query.offset),
+      product_id: convertByType(req.query.product_id),
+      limit: convertByType(req.query.limit),
+      offset: convertByType(req.query.offset),
     };
 
     let result = await product.packageList(params);
@@ -203,7 +203,7 @@ exports.packageDetail = async (req, res, next) => {
 
   try {
     let params = {
-      id: convertByType(detectType(req.query.id), req.query.id),
+      id: convertByType(req.query.id),
     };
 
     let result = await product.packageDetail(params);
@@ -235,12 +235,12 @@ exports.packageCreate = async (req, res, next) => {
   let response;
   try {
     let params = {
-      product_id: convertByType(detectType(req.body.product_id), req.body.product_id),
-      name: convertByType(detectType(req.body.name), req.body.name),
-      period: convertByType(detectType(req.body.period), req.body.period),
-      price: convertByType(detectType(req.body.price), req.body.price),
-      stock: convertByType(detectType(req.body.stock), req.body.stock),
-      status: convertByType(detectType(req.body.status), req.body.status),
+      product_id: convertByType(req.body.product_id),
+      name: convertByType(req.body.name),
+      period: convertByType(req.body.period),
+      price: convertByType(req.body.price),
+      stock: convertByType(req.body.stock),
+      status: convertByType(req.body.status),
       action_by: req.username,
     };
 
@@ -272,12 +272,12 @@ exports.packageUpdate = async (req, res, next) => {
   let response;
   try {
     let params = {
-      id: convertByType(detectType(req.body.id), req.body.id),
-      name: convertByType(detectType(req.body.name), req.body.name),
-      period: convertByType(detectType(req.body.period), req.body.period),
-      price: convertByType(detectType(req.body.price), req.body.price),
-      stock: convertByType(detectType(req.body.stock), req.body.stock),
-      status: convertByType(detectType(req.body.status), req.body.status),
+      id: convertByType(req.body.id),
+      name: convertByType(req.body.name),
+      period: convertByType(req.body.period),
+      price: convertByType(req.body.price),
+      stock: convertByType(req.body.stock),
+      status: convertByType(req.body.status),
       action_by: req.username,
     };
 
@@ -309,7 +309,7 @@ exports.packageDelete = async (req, res, next) => {
   let response;
   try {
     let params = {
-      id: convertByType(detectType(req.body.id), req.body.id),
+      id: convertByType(req.body.id),
       action_by: req.username,
     };
 
@@ -340,8 +340,8 @@ exports.categoryList = async (req, res, next) => {
 
   try {
     let params = {
-      limit: convertByType(detectType(req.query.limit), req.query.limit),
-      offset: convertByType(detectType(req.query.offset), req.query.offset),
+      limit: convertByType(req.query.limit),
+      offset: convertByType(req.query.offset),
     };
 
     let result = await product.categoryList(params);
@@ -381,9 +381,9 @@ exports.categoryDetail = async (req, res, next) => {
 
   try {
     let params = {
-      category_id: convertByType(detectType(req.query.category_id), req.query.category_id),
-      limit: convertByType(detectType(req.query.limit), req.query.limit),
-      offset: convertByType(detectType(req.query.offset), req.query.offset),
+      category_id: convertByType(req.query.category_id),
+      limit: convertByType(req.query.limit),
+      offset: convertByType(req.query.offset),
     };
 
     let result = await product.categoryDetail(params);
@@ -422,8 +422,8 @@ exports.categoryCreate = async (req, res, next) => {
   let response;
   try {
     let params = {
-      product_id: convertByType(detectType(req.body.product_id), req.body.product_id),
-      category_id: convertByType(detectType(req.body.category_id), req.body.category_id),
+      product_id: convertByType(req.body.product_id),
+      category_id: convertByType(req.body.category_id),
       action_by: req.username,
     };
 
@@ -455,8 +455,8 @@ exports.categoryDelete = async (req, res, next) => {
   let response;
   try {
     let params = {
-      product_id: convertByType(detectType(req.body.product_id), req.body.product_id),
-      category_id: convertByType(detectType(req.body.category_id), req.body.category_id),
+      product_id: convertByType(req.body.product_id),
+      category_id: convertByType(req.body.category_id),
       action_by: req.username,
     };
 
@@ -489,16 +489,9 @@ exports.listDetail = async (req, res, next) => {
 
   try {
     let params = {
-      category_id:
-        req.query?.category_id &&
-        detectType(req.query.category_id) == "int-string"
-          ? convertByType(
-              detectType(req.query.category_id),
-              req.query.category_id
-            )
-          : null,
-      limit: convertByType(detectType(req.query.limit), req.query.limit),
-      offset: convertByType(detectType(req.query.offset), req.query.offset),
+      category_id: req.query?.category_id && detectType(req.query.category_id) == "int-string" ? convertByType(req.query.category_id) : null, 
+      limit: convertByType(req.query.limit),
+      offset: convertByType(req.query.offset),
     };
 
     let result = await product.listDetail(params);

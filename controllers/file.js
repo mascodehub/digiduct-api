@@ -1,7 +1,7 @@
 const generalResp = require("../utils/httpResp");
 const file = require("../services/file");
 const { uploadFile } = require("../utils/file");
-const { convertByType, detectType } = require("../utils/datatype");
+const { convertByType } = require("../utils/datatype");
 
 exports.uploadProduct = async (req, res, next) => {
   let response;
@@ -16,7 +16,7 @@ exports.uploadProduct = async (req, res, next) => {
     }
 
     let params = {
-      id: convertByType(detectType(req.body.product_id), req.body.product_id),
+      id: convertByType(req.body.product_id),
       image_path: upload.optimized,
     };
 

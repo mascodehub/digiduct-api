@@ -23,7 +23,8 @@ function detectType(value) {
   return typeof value;
 }
 
-function convertByType(type, value) {
+function convertByType(value) {
+  let type = detectType(value);
   switch (type) {
     case "boolean":
       return Boolean(value);

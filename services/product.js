@@ -196,62 +196,59 @@ exports.categoryList = async (params) => {
     },
     take: params.limit,
     skip: params.offset,
-    orderBy: { category: { name: "asc" } },
+    orderBy: [{ category: { name: "asc" } }, { product: { name: "asc" } }],
   });
 
   return result;
 };
 
 exports.categoryDetail = async (params) => {
-  let result = await prisma.product_category.findFirst({
+  let result = await prisma.product_category.findMany({
     select: {
-      id: true,
       product_id: true,
-      name: true,
-      period: true,
-      price: true,
-      stock: true,
-      status: true,
+      category_id: true,
+      product: {
+        select: {
+          name: true,
+        },
+      },
+      category: {
+        select: {
+          name: true,
+        },
+      },
     },
     where: {
-      id: params.id,
+      category_id: params.category_id,
       del_on: null,
     },
+    take: params.limit,
+    skip: params.offset,
+    orderBy: { product: { name: "asc" } },
   });
 
   return result;
 };
 
 exports.categoryCreate = async (params) => {
-  let result = await prisma.product_category.create({
-    data: {
-      product_id: params.product_id,
-      name: params.name,
-      period: params.period,
-      price: params.price,
-      stock: params.stock,
-      status: params.status,
-      add_by: params.action_by,
-      add_on: new Date(),
+  let result = await prisma.product_category.upsert({
+    where: {
+      product_id_category_id: {
+        product_id: params.product_id,
+        category_id: params.category_id,
+      },
     },
-  });
-
-  return result;
-};
-
-exports.categoryUpdate = async (params) => {
-  let result = await prisma.product_category.update({
-    data: {
-      name: params.name,
-      period: params.period,
-      price: params.price,
-      stock: params.stock,
-      status: params.status,
+    update: {
       edit_by: params.action_by,
       edit_on: new Date(),
+      del_by: null,
+      del_on: null,
     },
-    where: {
-      id: params.id,
+    create: {
+      product_id: params.product_id,
+      category_id: params.category_id,
+      add_by: params.action_by,
+      add_on: new Date(),
     },
   });
 
@@ -265,7 +262,10 @@ exports.categoryDelete = async (params) => {
       del_on: new Date(),
     },
     where: {
-      id: params.id,
+      product_id_category_id: {
+        product_id: params.product_id,
+        category_id: params.category_id,
+      },
     },
   });
 

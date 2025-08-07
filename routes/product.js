@@ -103,7 +103,7 @@ router.get(
 
 router.get(
   "/category/detail",
-  middleware.checkParams(["id"]),
+  middleware.checkParams(["category_id", "limit", "offset"]),
   controllers.product.categoryDetail
 );
 
@@ -111,39 +111,16 @@ router.post(
   "/category",
   [
     middleware.checkGrants(constant.GRANTS_ROLE),
-    middleware.checkParams([
-      "product_id",
-      "name",
-      "period",
-      "price",
-      "stock",
-      "status",
-    ]),
+    middleware.checkParams(["product_id", "category_id"]),
   ],
   controllers.product.categoryCreate
-);
-
-router.put(
-  "/category",
-  [
-    middleware.checkGrants(constant.GRANTS_ROLE),
-    middleware.checkParams([
-      "id",
-      "name",
-      "period",
-      "price",
-      "stock",
-      "status",
-    ]),
-  ],
-  controllers.product.categoryUpdate
 );
 
 router.delete(
   "/category",
   [
     middleware.checkGrants(constant.GRANTS_ROLE),
-    middleware.checkParams(["id"]),
+    middleware.checkParams(["product_id", "category_id"]),
   ],
   controllers.product.categoryDelete
 );

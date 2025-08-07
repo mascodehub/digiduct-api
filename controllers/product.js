@@ -346,10 +346,10 @@ exports.categoryList = async (req, res, next) => {
     let result = await product.categoryList(params);
 
     result = result.map((item) => ({
-      product_id: item.product_id,
-      product_name: item.product.name,
       category_id: item.category_id,
       category_name: item.category.name,
+      product_id: item.product_id,
+      product_name: item.product.name,
     }));
 
     response = {
@@ -380,10 +380,19 @@ exports.categoryDetail = async (req, res, next) => {
 
   try {
     let params = {
-      id: parseInt(req.query.id),
+      category_id: parseInt(req.query.category_id),
+      limit: parseInt(req.query.limit),
+      offset: parseInt(req.query.offset),
     };
 
     let result = await product.categoryDetail(params);
+
+    result = result.map((item) => ({
+      category_id: item.category_id,
+      category_name: item.category.name,
+      product_id: item.product_id,
+      product_name: item.product.name,
+    }));
 
     response = {
       rc: generalResp.HTTP_OK,
@@ -413,57 +422,16 @@ exports.categoryCreate = async (req, res, next) => {
   try {
     let params = {
       product_id: parseInt(req.body.product_id),
-      name: req.body.name,
-      period: parseInt(req.body.period),
-      price: parseInt(req.body.price),
-      stock: parseInt(req.body.stock),
-      status: parseInt(req.body.status),
+      category_id: parseInt(req.body.category_id),
       action_by: req.username,
     };
 
-    let result = await product.categoryCreate(params);
+    await product.categoryCreate(params);
 
     response = {
       rc: generalResp.HTTP_OK,
       rd: "OK",
-      data: result,
-    };
-    res.locals.response = JSON.stringify(response);
-  } catch (error) {
-    console.error(error);
-
-    response = {
-      rc: error.rc || 500,
-      rd: error.rd || "Some error occurred while retrieving data.",
-      result: null,
-    };
-
-    res.locals.status = error.rc || 500;
-    res.locals.response = JSON.stringify(response);
-  }
-
-  next();
-};
-
-exports.categoryUpdate = async (req, res, next) => {
-  let response;
-  try {
-    let params = {
-      id: parseInt(req.body.id),
-      name: req.body.name,
-      period: parseInt(req.body.period),
-      price: parseInt(req.body.price),
-      stock: parseInt(req.body.stock),
-      status: parseInt(req.body.status),
-      action_by: req.username,
-    };
-
-    let result = await product.categoryUpdate(params);
-
-    response = {
-      rc: generalResp.HTTP_OK,
-      rd: "OK",
-      data: result,
+      data: "",
     };
     res.locals.response = JSON.stringify(response);
   } catch (error) {
@@ -486,7 +454,8 @@ exports.categoryDelete = async (req, res, next) => {
   let response;
   try {
     let params = {
-      id: parseInt(req.body.id),
+      product_id: parseInt(req.body.product_id),
+      category_id: parseInt(req.body.category_id),
       action_by: req.username,
     };
 
@@ -499,6 +468,8 @@ exports.categoryDelete = async (req, res, next) => {
     };
     res.locals.response = JSON.stringify(response);
   } catch (error) {
+    console.error(error);
+    
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",

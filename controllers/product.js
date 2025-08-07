@@ -1,5 +1,6 @@
 // const logger = require("../utils/logger");
 const generalResp = require("../utils/httpResp");
+const { detectType, convertByType } = require("../utils/datatype");
 const product = require("../services/product");
 
 exports.list = async (req, res, next) => {
@@ -469,11 +470,49 @@ exports.categoryDelete = async (req, res, next) => {
     res.locals.response = JSON.stringify(response);
   } catch (error) {
     console.error(error);
-    
+
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",
       result: null,
+    };
+
+    res.locals.status = error.rc || 500;
+    res.locals.response = JSON.stringify(response);
+  }
+
+  next();
+};
+
+exports.listDetail = async (req, res, next) => {
+  let response;
+  
+  try {
+    let params = {
+      category_id:
+        req.query?.category_id && detectType(req.query.category_id) == 'int-string'
+          ? convertByType(detectType(req.query.category_id), req.query.category_id)
+          : null,
+      limit: parseInt(req.query.limit),
+      offset: parseInt(req.query.offset),
+    };
+
+    let result = await product.listDetail(params);
+
+    response = {
+      rc: generalResp.HTTP_OK,
+      rd: "SUCCESS",
+      data: result,
+    };
+
+    res.locals.response = JSON.stringify(response);
+  } catch (error) {
+    console.error(error);
+
+    response = {
+      rc: error.rc || 500,
+      rd: error.rd || "Some error occurred while retrieving data.",
+      data: null,
     };
 
     res.locals.status = error.rc || 500;

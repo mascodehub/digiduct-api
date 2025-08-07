@@ -271,3 +271,29 @@ exports.categoryDelete = async (params) => {
 
   return result;
 };
+
+exports.listDetail = async (params) => {
+  let where = '';
+  if(params.category_id != null){
+    where += ` and c.id = ${params.category_id} `;
+  }
+  
+  let result = await prisma.$queryRawUnsafe(`
+  select
+      pr.id as product_id,
+      pr.name as product_name,
+      pr.image_path as product_image_path,
+      c.name as category_name,
+      (select case when count(1) > 0 then 1 else 0 end from digiduct.product_package where product_id = pr.id and status = 1 and stock <> 0) as available
+    from digiduct.product pr
+    inner join digiduct.product_category pc on pc.product_id = pr.id
+    inner join digiduct.category c on c.id = pc.category_id
+    where 1=1
+      ${where}
+    order by pr.name
+    limit ${params.limit}
+    offset ${params.offset}
+  `);
+  
+  return result;
+};

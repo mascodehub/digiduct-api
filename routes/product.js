@@ -125,4 +125,10 @@ router.delete(
   controllers.product.categoryDelete
 );
 
+router.get(
+  "/list",
+  middleware.checkParams(["limit", "offset"]),
+  controllers.product.listDetail
+);
+
 module.exports = router;

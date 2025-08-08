@@ -57,6 +57,7 @@ exports.categoryCreate = async (req, res, next) => {
     response = {
       rc: generalResp.HTTP_OK,
       rd: "OK",
+      data: result,
     };
     res.locals.response = JSON.stringify(response);
   } catch (error) {

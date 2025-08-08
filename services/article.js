@@ -64,13 +64,22 @@ exports.update = async (params) => {
 };
 
 exports.categoryCreate = async (params) => {
-  let result = await prisma.article_category.create({
-    data: {
+  let result = await prisma.article_category.findFirst({
+    where: {
       name: params.name,
       slug: params.slug,
-      add_on: new Date(),
     },
   });
+
+  if (!result) {
+    result = await prisma.article_category.create({
+      data: {
+        name: params.name,
+        slug: params.slug,
+        add_on: new Date(),
+      },
+    });
+  }
 
   return result;
 };

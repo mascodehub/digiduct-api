@@ -91,7 +91,7 @@ exports.create = async (req, res, next) => {
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",
-      result: null,
+      data: null,
     };
 
     res.locals.status = error.rc || 500;
@@ -123,7 +123,7 @@ exports.update = async (req, res, next) => {
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",
-      result: null,
+      data: null,
     };
 
     res.locals.status = error.rc || 500;
@@ -153,7 +153,7 @@ exports.delete = async (req, res, next) => {
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",
-      result: null,
+      data: null,
     };
 
     res.locals.status = error.rc || 500;
@@ -258,7 +258,7 @@ exports.packageCreate = async (req, res, next) => {
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",
-      result: null,
+      data: null,
     };
 
     res.locals.status = error.rc || 500;
@@ -295,7 +295,7 @@ exports.packageUpdate = async (req, res, next) => {
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",
-      result: null,
+      data: null,
     };
 
     res.locals.status = error.rc || 500;
@@ -325,7 +325,7 @@ exports.packageDelete = async (req, res, next) => {
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",
-      result: null,
+      data: null,
     };
 
     res.locals.status = error.rc || 500;
@@ -441,7 +441,7 @@ exports.categoryCreate = async (req, res, next) => {
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",
-      result: null,
+      data: null,
     };
 
     res.locals.status = error.rc || 500;
@@ -474,7 +474,7 @@ exports.categoryDelete = async (req, res, next) => {
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",
-      result: null,
+      data: null,
     };
 
     res.locals.status = error.rc || 500;

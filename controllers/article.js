@@ -34,7 +34,7 @@ exports.create = async (req, res, next) => {
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",
-      result: null,
+      data: null,
     };
 
     res.locals.status = error.rc || 500;
@@ -66,7 +66,7 @@ exports.categoryCreate = async (req, res, next) => {
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",
-      result: null,
+      data: null,
     };
 
     res.locals.status = error.rc || 500;

@@ -43,8 +43,8 @@ app.use(
 );
 
 app.use(
-  "/article",
-  routes.article,
+  "/post/category",
+  routes.post_category,
   middleware.recordHit,
   middleware.printForwardRequestResponse
 );

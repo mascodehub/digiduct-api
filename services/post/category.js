@@ -4,19 +4,15 @@ const prisma = new PrismaClient();
 exports.create = async (params) => {
   let result = await prisma.post_category.upsert({
     create: {
-      data: {
-        name: params.name,
-        slug: params.slug,
-        add_on: new Date(),
-      },
+      name: params.name,
+      slug: params.slug,
+      add_on: new Date(),
     },
     update: {
-      data: {
-        name: params.name,
-        slug: params.slug,
-        edit_on: new Date(),
-        del_on: null,
-      },
+      name: params.name,
+      slug: params.slug,
+      edit_on: new Date(),
+      del_on: null,
     },
     where: {
       name: params.name,

@@ -41,7 +41,18 @@ router.put(
   [
     middleware.checkGrants(constant.GRANTS_ROLE),
     middleware.checkParams([
-      { id: ["int-string", "integer"], name: ["string"] },
+      { id: ["int-string", "integer"] },
+      { title: ["string"] },
+      { content: ["string"] },
+      { thumbnail: ["string"] },
+      { status: ["string"] },
+      { category_id: ["int-string", "integer"] },
+      { meta_title: ["string"] },
+      { meta_description: ["string"] },
+      { meta_keywords: ["string"] },
+      { og_title: ["string"] },
+      { og_description: ["string"] },
+      { og_image: ["string"] },
     ]),
   ],
   controllers.post_article.update

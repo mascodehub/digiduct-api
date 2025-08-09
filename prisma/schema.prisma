@@ -48,7 +48,7 @@ model post_article {
   thumbnail        String?            @db.VarChar(255)
   status           String?            @db.VarChar(20)
   published_on     DateTime?          @db.Timestamp(6)
-  author_id        Int?
+  author_username  String?            @db.VarChar
   category_id      Int?
   meta_title       String?            @db.VarChar(255)
   meta_description String?            @db.VarChar(255)
@@ -59,7 +59,7 @@ model post_article {
   add_on           DateTime?          @db.Timestamp(6)
   edit_on          DateTime?          @db.Timestamp(6)
   del_on           DateTime?          @db.Timestamp(6)
-  admin            admin?             @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  admin            admin?             @relation(fields: [author_username], references: [username], onDelete: NoAction, onUpdate: NoAction)
   post_category    post_category?     @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   post_article_tag post_article_tag[] @ignore
 

@@ -26,6 +26,38 @@ exports.create = async (params) => {
   return result;
 };
 
+exports.rollbackCreate = async (params) => {
+  if (params.article_id) {
+    console.log("roolback post_article");
+    await prisma.post_article.delete({
+      where: { id: params.article_id },
+    });
+  }
+
+  if (params.tag_slug) {
+    console.log("roolback post_tag");
+    await prisma.post_tag.deleteMany({
+      where: {
+        slug: {
+          in: params.tag_slug,
+        },
+      },
+    });
+  }
+
+  if (params.article_tag) {
+    console.log("roolback article_tag");
+
+    await prisma.article_tag.deleteMany({
+      where: {
+        or: params.article_tag,
+      },
+    });
+  }
+
+  return true;
+};
+
 exports.list = async (params) => {
   let result = await prisma.post_article.findMany({
     select: {
@@ -127,7 +159,7 @@ exports.tagList = async (params) => {
     },
     where: {
       slug: {
-        in: params.slug,
+        in: params.tag_slug,
       },
     },
   });
@@ -136,10 +168,10 @@ exports.tagList = async (params) => {
 };
 
 exports.articleTagCreateMany = async (params) => {
-   let result = await prisma.post_article_tag.createMany({
-     data: params,
-     skipDuplicates: true,
-   });
- 
-   return result;
- };
+  let result = await prisma.post_article_tag.createMany({
+    data: params,
+    skipDuplicates: true,
+  });
+
+  return result;
+};

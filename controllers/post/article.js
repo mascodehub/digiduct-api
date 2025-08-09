@@ -4,45 +4,53 @@ const { slugify } = require("../../utils/global");
 const article = require("../../services/post/article");
 
 exports.create = async (req, res, next) => {
-  let response, params, result;
+  let response,
+    params = {},
+    result,
+    paramsRollback = {};
   try {
-    await prisma.$transaction(async (tx) => {
-      params = {
-        title: convertByType(req.body.title),
-        slug: slugify(convertByType(req.body.title)),
-        content: convertByType(req.body.content),
-        thumbnail: convertByType(req.body.thumbnail),
-        status: convertByType(req.body.status),
-        category_id: convertByType(req.body.category_id),
-        meta_title: convertByType(req.body.meta_title),
-        meta_description: convertByType(req.body.meta_description),
-        meta_keywords: convertByType(req.body.meta_keywords),
-        og_title: convertByType(req.body.og_title),
-        og_description: convertByType(req.body.og_description),
-        og_image: convertByType(req.body.og_image),
-        author_username: req.username,
-      };
+    params = {
+      title: convertByType(req.body.title),
+      slug: slugify(convertByType(req.body.title)),
+      content: convertByType(req.body.content),
+      thumbnail: convertByType(req.body.thumbnail),
+      status: convertByType(req.body.status),
+      category_id: convertByType(req.body.category_id),
+      meta_title: convertByType(req.body.meta_title),
+      meta_description: convertByType(req.body.meta_description),
+      meta_keywords: convertByType(req.body.meta_keywords),
+      og_title: convertByType(req.body.og_title),
+      og_description: convertByType(req.body.og_description),
+      og_image: convertByType(req.body.og_image),
+      tag: convertByType(req.body.tag),
+      author_username: req.username,
+    };
 
-      result = await article.create(params);
+    result = await article.create(params);
 
-      let article_id = result.id;
+    let article_id = result.id;
+    paramsRollback.article_id = article_id;
 
-      params = params.tag.map((item) => ({
-        name: item.name,
-        slug: slugify(convertByType(item.name)),
-        add_on: new Date(),
-      }));
-      await article.tagCreateMany(params);
+    params = params.tag.map((item) => ({
+      name: item.name,
+      slug: slugify(convertByType(item.name)),
+      add_on: new Date(),
+    }));
 
-      params = params.map((item) => item.slug);
-      result = await article.tagList(params);
+    await article.tagCreateMany(params);
 
-      params = result.map((item) => ({
-        article_id: article_id,
-        tag_id: item.id,
-      }));
-      await article.articleTagCreateMany(params);
-    });
+    params.tag_slug = params.map((item) => item.slug);
+    paramsRollback.tag_slug = params;
+
+    result = await article.tagList(params);
+
+    params = result.map((item) => ({
+      article_id: article_id,
+      tag_id: item.id,
+    }));
+
+    paramsRollback.article_tag = params;
+    await article.articleTagCreateMany(params);
 
     response = {
       rc: generalResp.HTTP_OK,
@@ -52,6 +60,8 @@ exports.create = async (req, res, next) => {
     res.locals.response = JSON.stringify(response);
   } catch (error) {
     console.error(error);
+
+    await article.rollbackCreate(paramsRollback);
 
     response = {
       rc: error.rc || 500,

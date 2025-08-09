@@ -61,19 +61,18 @@ model post_article {
   del_on           DateTime?          @db.Timestamp(6)
   admin            admin?             @relation(fields: [author_username], references: [username], onDelete: NoAction, onUpdate: NoAction)
   post_category    post_category?     @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  post_article_tag post_article_tag[] @ignore
+  post_article_tag post_article_tag[]
 
   @@schema("digiduct")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
 model post_article_tag {
-  article_id   Int?
-  tag_id       Int?
-  post_article post_article? @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  post_tag     post_tag?     @relation(fields: [tag_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  article_id   Int
+  tag_id       Int
+  post_article post_article @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  post_tag     post_tag     @relation(fields: [tag_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@ignore
+  @@id([article_id, tag_id], map: "post_article_tag_pk")
   @@schema("digiduct")
 }
 
@@ -96,7 +95,7 @@ model post_tag {
   add_on           DateTime?          @db.Timestamp(6)
   edit_on          DateTime?          @db.Timestamp(6)
   del_on           DateTime?          @db.Timestamp(6)
-  post_article_tag post_article_tag[] @ignore
+  post_article_tag post_article_tag[]
 
   @@schema("digiduct")
 }

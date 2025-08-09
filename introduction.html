@@ -1,0 +1,76 @@
+<html lang="id">
+   <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+      <title>Digital Product Store — API Docs</title>
+      <style>
+         :root{
+         --bg:#0f172a; --card:#0b1220; --muted:#94a3b8; --accent:#7c3aed;
+         --glass: rgba(255,255,255,0.03);
+         font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+         }
+         html,body{height:100%;}
+         body{
+         margin:0; background:linear-gradient(180deg,#071133 0%, #071133 60%, #020617 100%);
+         color:#e6eef8; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+         padding:32px; box-sizing:border-box;
+         }
+         .container{max-width:1100px;margin:0 auto;}
+         header{display:flex;gap:16px;align-items:center;margin-bottom:24px}
+         .logo{width:72px;height:72px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#2563eb);display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:20px;box-shadow:0 6px 24px rgba(124,58,237,0.16)}
+         h1{margin:0;font-size:24px}
+         p.lead{margin:4px 0 0;color:var(--muted)}
+         .card{background:var(--card);border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 6px 30px rgba(2,6,23,0.6)}
+         .grid{display:grid;grid-template-columns:1fr 320px;gap:20px}
+         pre{background:var(--glass);padding:12px;border-radius:8px;overflow:auto;color:#dbeafe}
+         code{font-family:SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:13px}
+         ul.clean{padding-left:16px;margin:8px 0}
+         .muted{color:var(--muted)}
+         .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.03);color:var(--muted);font-size:13px}
+         .sidebar h3{margin-top:0}
+         .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg,#334155,#0f172a);color:#dbeafe;text-decoration:none;border:1px solid rgba(255,255,255,0.03);cursor:pointer}
+         .code-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+         .small{font-size:13px}
+         @media (max-width:900px){
+         .grid{grid-template-columns:1fr;}
+         header{flex-direction:column;align-items:flex-start}
+         .logo{width:56px;height:56px}
+         }
+      </style>
+   </head>
+   <body>
+      <div class="container">
+      <header>
+         <div class="logo">DP</div>
+         <div>
+            <h1>Digital Product Store <span class="badge">Backend API</span></h1>
+            <p class="lead">API backend untuk penjualan <strong>produk digital</strong> — Express.js, Prisma, PostgreSQL, JWT untuk admin, dan email notifikasi.</p>
+         </div>
+      </header>
+      <div class="grid">
+         <main>
+         <section class="card">
+            <h2>✨ Fitur Utama</h2>
+            <ul class="clean">
+               <li>📥 Pembelian produk digital tanpa login (guest checkout)</li>
+               <li>🔐 Login admin menggunakan JWT</li>
+               <li>🧾 Manajemen produk oleh admin (CRUD)</li>
+               <li>📬 Notifikasi email otomatis ke pembeli & admin saat ada pembelian</li>
+               <li>📦 Struktur modular: <em>Routes → Controller → Service</em></li>
+            </ul>
+         </section>
+         <section class="card">
+            <h2>⚙️ Persiapan & Teknologi</h2>
+            <ul class="clean">
+               <li>Node.js + Express</li>
+               <li>Prisma (ORM) + PostgreSQL</li>
+               <li>JSON Web Token (JWT) untuk autentikasi admin</li>
+               <li>Nodemailer / transactional email provider untuk notifikasi</li>
+            </ul>
+         </section>
+         <footer style="margin-top:18px;text-align:center;color:var(--muted);font-size:13px">
+            Dokumentasi dasar untuk <strong>Digital Product Store</strong>
+         </footer>
+      </div>
+   </body>
+</html>

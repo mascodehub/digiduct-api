@@ -2,6 +2,7 @@
 const constant = require("../utils/constant");
 const middleware = require("../utils/middleware");
 const routes = require("../routes/init");
+const path = require('path');
 
 const cors = require("cors");
 const express = require("express");
@@ -13,6 +14,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  "/",
+  express.Router().get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "../introduction.html"));
+  })
+);
 
 app.use(
   "/auth",

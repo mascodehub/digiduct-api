@@ -1,5 +1,6 @@
 const dayjs = require('moment')
 
+const FMT_DATE_TIME_DMYHMS = 'DD-MM-YYYY HH:mm:ss'
 const FMT_DATE_TIME_YMDHMS = 'YYYY-MM-DD HH:mm:ss'
 const FMT_DATE_TIME_YMDHMSU = 'YYYY-MM-DD HH:mm:ss.SSS'
 const TODAY = 'YYYY-MM-DD'
@@ -50,7 +51,7 @@ function todayDate() {
 }
 
 function dateFormat(date, microtime) {
-  return dayjs(date).format(microtime ? FMT_DATE_TIME_YMDHMSU : FMT_DATE_TIME_YMDHMS)
+  return dayjs(date).format(microtime ? FMT_DATE_TIME_YMDHMSU : FMT_DATE_TIME_DMYHMS)
 }
 
 function rangeDate(day) {

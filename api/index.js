@@ -71,6 +71,13 @@ app.use(
   middleware.printForwardRequestResponse
 );
 
+app.use(
+  "/transaction",
+  routes.transaction,
+  middleware.recordHit,
+  middleware.printForwardRequestResponse
+);
+
 module.exports = (req, res) => {
   app(req, res);
 };

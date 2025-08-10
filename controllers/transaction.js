@@ -1,10 +1,12 @@
 const generalResp = require("../utils/httpResp");
 const { convertByType } = require("../utils/datatype");
-const { slugify } = require("../utils/global");
+const { slugify, rupiah } = require("../utils/global");
+const { sendMail } = require("../utils/mail");
 const transaction = require("../services/transaction");
 const product = require("../services/product");
 const category = require("../services/category");
 const user = require("../services/user");
+const { dateFormat } = require("../utils/datetime");
 
 exports.create = async (req, res, next) => {
   let response,
@@ -41,6 +43,24 @@ exports.create = async (req, res, next) => {
     params.category_name = detailCategory.name;
 
     result = await transaction.create(params);
+
+    let paramOrder = {
+      order_uuid: result.uuid,
+      customer_phone: detailUser.phone,
+      product_name: detailProduct.name,
+      product_package: detailPackage.name,
+      total_price: rupiah(detailPackage.price),
+      order_date: dateFormat(result.add_on),
+    };
+
+    const mailParams = {
+      to: "walidshr8@gmail.com",
+      subject: `Order Baru #${result.uuid} dari ${detailUser.phone}`,
+      template: "orderProcess",
+      context: paramOrder,
+    };
+
+    sendMail(mailParams);
 
     response = {
       rc: generalResp.HTTP_OK,

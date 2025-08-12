@@ -150,3 +150,74 @@ exports.detail = async (req, res, next) => {
 
   next();
 };
+
+exports.process = async (req, res, next) => {
+  let response,
+    params = {},
+    result,
+    paramsRollback = {};
+  try {
+    params = {
+      uuid: convertByType(req.body.uuid),
+      status: convertByType(req.body.status),
+    };
+
+    result = await transaction.process(params);
+
+    response = {
+      rc: generalResp.HTTP_OK,
+      rd: "OK",
+      data: { uuid_order: result.uuid },
+    };
+    res.locals.response = JSON.stringify(response);
+  } catch (error) {
+    console.error(error);
+
+    response = {
+      rc: error.rc || 500,
+      rd: error.rd || "Some error occurred while retrieving data.",
+      data: null,
+    };
+
+    res.locals.status = error.rc || 500;
+    res.locals.response = JSON.stringify(response);
+  }
+
+  next();
+};
+
+exports.review = async (req, res, next) => {
+  let response,
+    params = {},
+    result,
+    paramsRollback = {};
+  try {
+    params = {
+      uuid: convertByType(req.body.uuid),
+      rating: convertByType(req.body.rating),
+      review: convertByType(req.body.review),
+    };
+
+    result = await transaction.review(params);
+
+    response = {
+      rc: generalResp.HTTP_OK,
+      rd: "OK",
+      data: { uuid_order: result.uuid },
+    };
+    res.locals.response = JSON.stringify(response);
+  } catch (error) {
+    console.error(error);
+
+    response = {
+      rc: error.rc || 500,
+      rd: error.rd || "Some error occurred while retrieving data.",
+      data: null,
+    };
+
+    res.locals.status = error.rc || 500;
+    res.locals.response = JSON.stringify(response);
+  }
+
+  next();
+};

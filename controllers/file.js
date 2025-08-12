@@ -41,3 +41,42 @@ exports.uploadProduct = async (req, res, next) => {
 
   next();
 };
+
+exports.uploadProve = async (req, res, next) => {
+  let response;
+  try {
+    let upload = await uploadFile(req.file.buffer);
+
+    if (!upload) {
+      throw {
+        rc: generalResp.HTTP_BADREQUEST,
+        rd: "Failed Upload!",
+      };
+    }
+
+    let params = {
+      uuid: convertByType(req.body.uuid),
+      prove_path: upload.optimized,
+    };
+
+    let result = await file.updateTransaction(params);
+
+    response = {
+      rc: generalResp.HTTP_OK,
+      rd: "OK",
+      data: result,
+    };
+    res.locals.response = JSON.stringify(response);
+  } catch (error) {
+    response = {
+      rc: error.rc || 500,
+      rd: error.rd || "Some error occurred while retrieving data.",
+      data: null,
+    };
+
+    res.locals.status = error.rc || 500;
+    res.locals.response = JSON.stringify(response);
+  }
+
+  next();
+};

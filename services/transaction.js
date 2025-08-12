@@ -50,3 +50,32 @@ exports.detail = async (params) => {
 
   return result;
 };
+
+exports.process = async (params) => {
+  let result = await prisma.product_transactions.update({
+    data: {
+      status: params.status,
+      edit_on: new Date(),
+    },
+    where: {
+      uuid: params.uuid,
+    },
+  });
+
+  return result;
+};
+
+exports.review = async (params) => {
+  let result = await prisma.product_transactions.update({
+    data: {
+      rating: params.rating,
+      review: params.review,
+      edit_on: new Date(),
+    },
+    where: {
+      uuid: params.uuid,
+    },
+  });
+
+  return result;
+};

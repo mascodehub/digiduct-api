@@ -33,11 +33,27 @@ router.get(
   "/detail",
   [
     middleware.checkGrants(constant.GRANTS_ROLE),
-    middleware.checkParams([
-      { uuid: ["string"] },
-    ]),
+    middleware.checkParams([{ uuid: ["string"] }]),
   ],
   controllers.transaction.detail
+);
+
+router.post(
+  "/process",
+  [middleware.checkParams([{ uuid: ["string"] }, { status: ["string"] }])],
+  controllers.transaction.process
+);
+
+router.post(
+  "/review",
+  [
+    middleware.checkParams([
+      { uuid: ["string"] },
+      { review: ["int-string", "integer"] },
+      { rating: ["int-string", "integer"] },
+    ]),
+  ],
+  controllers.transaction.review
 );
 
 module.exports = router;

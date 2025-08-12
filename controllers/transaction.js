@@ -83,3 +83,70 @@ exports.create = async (req, res, next) => {
 
   next();
 };
+
+exports.list = async (req, res, next) => {
+  let response;
+
+  try {
+    let params = {
+      limit: convertByType(req.query.limit),
+      offset: convertByType(req.query.offset),
+    };
+
+    let result = await transaction.list(params);
+
+    response = {
+      rc: generalResp.HTTP_OK,
+      rd: "SUCCESS",
+      data: result,
+    };
+
+    res.locals.response = JSON.stringify(response);
+  } catch (error) {
+    console.error(error);
+
+    response = {
+      rc: error.rc || 500,
+      rd: error.rd || "Some error occurred while retrieving data.",
+      data: null,
+    };
+
+    res.locals.status = error.rc || 500;
+    res.locals.response = JSON.stringify(response);
+  }
+
+  next();
+};
+
+exports.detail = async (req, res, next) => {
+  let response;
+
+  try {
+    let params = {
+      uuid: convertByType(req.query.uuid),
+    };
+
+    let result = await transaction.detail(params);
+
+    response = {
+      rc: generalResp.HTTP_OK,
+      rd: "OK",
+      data: result,
+    };
+
+    res.locals.response = JSON.stringify(response);
+  } catch (error) {
+    console.error(error);
+
+    response = {
+      rc: error.rc || 500,
+      rd: error.rd || "Some error occurred while retrieving data.",
+      data: null,
+    };
+
+    res.locals.status = error.rc || 500;
+    res.locals.response = JSON.stringify(response);
+  }
+
+  next();
+};

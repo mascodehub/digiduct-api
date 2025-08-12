@@ -126,14 +126,14 @@ async function recordHit(req, res, next) {
 
   res.locals.clientIp = clientIp;
 
-  console.log(clientIp);
-  console.log(req.method);
-  console.log(req.originalUrl);
-  if (req.method == "GET") {
-    console.log(req.query);
-  } else {
-    console.log(req.body);
-  }
+  // console.log(clientIp);
+  // console.log(req.method);
+  // console.log(req.originalUrl);
+  // if (req.method == "GET") {
+  //   console.log(req.query);
+  // } else {
+  //   console.log(req.body);
+  // }
 
   // console.log(res.locals);
 

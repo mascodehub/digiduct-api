@@ -6,7 +6,6 @@ const constant = require("../utils/constant");
 router.post(
   "/order",
   [
-    middleware.checkGrants(constant.GRANTS_ROLE),
     middleware.checkParams([
       { phone: ["string", "int-string"] },
       { email: ["string"] },
@@ -16,6 +15,29 @@ router.post(
     ]),
   ],
   controllers.transaction.create
+);
+
+router.get(
+  "/",
+  [
+    middleware.checkGrants(constant.GRANTS_ROLE),
+    middleware.checkParams([
+      { limit: ["int-string", "integer"] },
+      { offset: ["int-string", "integer"] },
+    ]),
+  ],
+  controllers.transaction.list
+);
+
+router.get(
+  "/detail",
+  [
+    middleware.checkGrants(constant.GRANTS_ROLE),
+    middleware.checkParams([
+      { uuid: ["string"] },
+    ]),
+  ],
+  controllers.transaction.detail
 );
 
 module.exports = router;

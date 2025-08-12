@@ -26,3 +26,27 @@ exports.create = async (params) => {
 
   return result;
 };
+
+exports.list = async (params) => {
+  let result = await prisma.product_transactions.findMany({
+    where: {
+      del_on: null,
+    },
+    take: params.limit,
+    skip: params.offset,
+    orderBy: { add_on: "desc" },
+  });
+
+  return result;
+};
+
+exports.detail = async (params) => {
+  let result = await prisma.product_transactions.findFirst({
+    where: {
+      uuid: params.uuid,
+      del_on: null,
+    },
+  });
+
+  return result;
+};

@@ -75,7 +75,6 @@ exports.createData = async (req, res, next) => {
   try {
     let params = {
       name: convertByType(req.body.name),
-      description: convertByType(req.body.description),
       action_by: req.username, 
     };
 

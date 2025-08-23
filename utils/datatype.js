@@ -2,6 +2,8 @@ function detectType(value) {
   if (value === null) return "null";
   if (value === undefined) return "undefined";
 
+  if (Array.isArray(value)) return "array";
+
   if (typeof value === "boolean") return "boolean";
   if (typeof value === "string") {
     if (value.toLowerCase() === "true" || value.toLowerCase() === "false")

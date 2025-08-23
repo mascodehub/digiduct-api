@@ -112,6 +112,7 @@ model product {
   del_by           String?            @db.VarChar
   del_on           DateTime?          @db.Timestamp(6)
   product_category product_category[]
+  product_feature  product_feature[]
   product_package  product_package[]
 
   @@schema("digiduct")
@@ -130,6 +131,16 @@ model product_category {
   product     product   @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([product_id, category_id], map: "product_category_product_id_category_id_idx")
+  @@schema("digiduct")
+}
+
+model product_feature {
+  id         Int     @id @default(autoincrement())
+  product_id Int
+  name       String  @db.VarChar
+  product    product @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([product_id, id], map: "product_feature_product_id_id_idx")
   @@schema("digiduct")
 }
 

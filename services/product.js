@@ -38,7 +38,17 @@ exports.detail = async (params) => {
 };
 
 exports.create = async (params) => {
-  let result = await prisma.product.create({
+  let result = await prisma.product.findFirst({
+    where: {
+      name: params.name,
+      description: params.description,
+      del_on: null,
+    },
+  });
+
+  if (result) return false;
+
+  result = await prisma.product.create({
     data: {
       name: params.name,
       description: params.description,
@@ -51,7 +61,17 @@ exports.create = async (params) => {
 };
 
 exports.update = async (params) => {
-  let result = await prisma.product.update({
+  let result = await prisma.product.findFirst({
+    where: {
+      name: params.name,
+      description: params.description,
+      del_on: null,
+    },
+  });
+
+  if (result) return false;
+
+  result = await prisma.product.update({
     data: {
       name: params.name,
       description: params.description,
@@ -271,28 +291,52 @@ exports.categoryDelete = async (params) => {
   return result;
 };
 
+exports.featureCreate = async (params) => {
+  await prisma.product_feature.deleteMany({ where: { product_id: params.product_id } });
+
+  let result = await prisma.product_feature.createMany({
+    data: params,
+  });
+
+  return result;
+};
+
 exports.listDetail = async (params) => {
   let where = '';
-  if(params.category_id != null){
+  if (params.category_id != null) {
     where += ` and c.id = ${params.category_id} `;
   }
-  
+
   let result = await prisma.$queryRawUnsafe(`
   select
       pr.id as product_id,
       pr.name as product_name,
+      coalesce(pr.description, '-') as product_description,
       pr.image_path as product_image_path,
+      c.id as category_id,
       c.name as category_name,
+      pp.price,
       (select case when count(1) > 0 then 1 else 0 end from digiduct.product_package where product_id = pr.id and status = 1 and stock <> 0) as available
     from digiduct.product pr
     inner join digiduct.product_category pc on pc.product_id = pr.id
     inner join digiduct.category c on c.id = pc.category_id
+    inner join digiduct.product_package pp on pp.product_id = pr.id
     where 1=1
       ${where}
     order by pr.name
     limit ${params.limit}
     offset ${params.offset}
   `);
-  
+
+  for (let val of result) {
+    let getFeatures = await prisma.product_feature.findMany({
+      where: {
+        product_id: val.product_id
+      },
+    });
+    
+    val.feature = getFeatures.map((item) => item.name)
+  }
+
   return result;
 };

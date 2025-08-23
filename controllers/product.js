@@ -37,6 +37,40 @@ exports.list = async (req, res, next) => {
   next();
 };
 
+exports.listUser = async (req, res, next) => {
+  let response;
+
+  try {
+    let params = {
+      limit: convertByType(req.query.limit),
+      offset: convertByType(req.query.offset),
+    };
+
+    let result = await product.listUser(params);
+
+    response = {
+      rc: generalResp.HTTP_OK,
+      rd: "SUCCESS",
+      data: result,
+    };
+
+    res.locals.response = JSON.stringify(response);
+  } catch (error) {
+    console.error(error);
+
+    response = {
+      rc: error.rc || 500,
+      rd: error.rd || "Some error occurred while retrieving data.",
+      data: null,
+    };
+
+    res.locals.status = error.rc || 500;
+    res.locals.response = JSON.stringify(response);
+  }
+
+  next();
+};
+
 exports.detail = async (req, res, next) => {
   let response;
 
@@ -76,10 +110,25 @@ exports.create = async (req, res, next) => {
     let params = {
       name: convertByType(req.body.name),
       description: convertByType(req.body.description),
+      feature: convertByType(req.body.feature),
       action_by: req.username,
     };
 
     let result = await product.create(params);
+
+    if (!result) {
+      throw {
+        rc: generalResp.HTTP_BADREQUEST,
+        rd: "DUPLICATE DATA",
+      };
+    }
+
+    params = (params.feature).map((item) => ({
+      product_id: result.id,
+      name: item,
+    }));
+
+    await product.featureCreate(params);
 
     response = {
       rc: generalResp.HTTP_OK,
@@ -88,6 +137,8 @@ exports.create = async (req, res, next) => {
     };
     res.locals.response = JSON.stringify(response);
   } catch (error) {
+    console.log(error);
+
     response = {
       rc: error.rc || 500,
       rd: error.rd || "Some error occurred while retrieving data.",
@@ -108,10 +159,25 @@ exports.update = async (req, res, next) => {
       id: convertByType(req.body.id),
       name: convertByType(req.body.name),
       description: convertByType(req.body.description),
+      feature: convertByType(req.body.feature),
       action_by: req.username,
     };
 
     let result = await product.update(params);
+
+    if (!result) {
+      throw {
+        rc: generalResp.HTTP_BADREQUEST,
+        rd: "DUPLICATE DATA",
+      };
+    }
+
+    params = (params.feature).map((item) => ({
+      product_id: params.id,
+      name: item,
+    }));
+
+    await product.featureCreate(params);
 
     response = {
       rc: generalResp.HTTP_OK,
@@ -489,7 +555,7 @@ exports.listDetail = async (req, res, next) => {
 
   try {
     let params = {
-      category_id: req.query?.category_id && detectType(req.query.category_id) == "int-string" ? convertByType(req.query.category_id) : null, 
+      category_id: req.query?.category_id && detectType(req.query.category_id) == "int-string" ? convertByType(req.query.category_id) : null,
       limit: convertByType(req.query.limit),
       offset: convertByType(req.query.offset),
     };

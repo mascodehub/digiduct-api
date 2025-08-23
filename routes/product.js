@@ -22,7 +22,7 @@ router.post(
   "/",
   [
     middleware.checkGrants(constant.GRANTS_ROLE),
-    middleware.checkParams([{ name: ["string"] }, { description: ["string"] }]),
+    middleware.checkParams([{ name: ["string"] }, { description: ["string"] }, { feature: ["array"] }]),
   ],
   controllers.product.create
 );

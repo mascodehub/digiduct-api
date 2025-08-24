@@ -52,6 +52,7 @@ exports.create = async (params) => {
     data: {
       name: params.name,
       description: params.description,
+      metaphone: params.metaphone,
       add_by: params.action_by,
       add_on: new Date(),
     },
@@ -63,6 +64,9 @@ exports.create = async (params) => {
 exports.update = async (params) => {
   let result = await prisma.product.findFirst({
     where: {
+      id: {
+        not: params.id
+      },
       name: params.name,
       description: params.description,
       del_on: null,
@@ -76,6 +80,7 @@ exports.update = async (params) => {
       name: params.name,
       description: params.description,
       image_path: params.image_path,
+      metaphone: params.metaphone,
       edit_by: params.action_by,
       edit_on: new Date(),
     },
@@ -307,6 +312,10 @@ exports.listDetail = async (params) => {
     where += ` and c.id = ${params.category_id} `;
   }
 
+  if (params.product_name != null) {
+    where += ` and pr.name like '%${params.product_name}%' `;
+  }
+
   let result = await prisma.$queryRawUnsafe(`
   select
       pr.id as product_id,
@@ -334,7 +343,7 @@ exports.listDetail = async (params) => {
         product_id: val.product_id
       },
     });
-    
+
     val.feature = getFeatures.map((item) => item.name)
   }
 

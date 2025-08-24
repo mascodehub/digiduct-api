@@ -1,6 +1,7 @@
 // const logger = require("../utils/logger");
 const generalResp = require("../utils/httpResp");
 const { convertByType } = require("../utils/datatype");
+const { convertMetaphone } = require("../utils/metaphone");
 const product = require("../services/product");
 
 exports.list = async (req, res, next) => {
@@ -111,6 +112,7 @@ exports.create = async (req, res, next) => {
       name: convertByType(req.body.name),
       description: convertByType(req.body.description),
       feature: convertByType(req.body.feature),
+      metaphone: convertMetaphone(convertByType(req.body.name)),
       action_by: req.username,
     };
 
@@ -160,11 +162,12 @@ exports.update = async (req, res, next) => {
       name: convertByType(req.body.name),
       description: convertByType(req.body.description),
       feature: convertByType(req.body.feature),
+      metaphone: convertMetaphone(convertByType(req.body.name)),
       action_by: req.username,
     };
 
     let result = await product.update(params);
-
+    
     if (!result) {
       throw {
         rc: generalResp.HTTP_BADREQUEST,

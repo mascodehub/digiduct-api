@@ -31,7 +31,7 @@ router.put(
   "/",
   [
     middleware.checkGrants(constant.GRANTS_ROLE),
-    middleware.checkParams([{ id: ["int-string", "integer"] }, { name: ["string"] }, { description: ["string"] }]),
+    middleware.checkParams([{ id: ["int-string", "integer"] }, { name: ["string"] }, { description: ["string"] }, { feature: ["array"] }]),
   ],
   controllers.product.update
 );

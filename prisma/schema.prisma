@@ -111,6 +111,7 @@ model product {
   edit_on          DateTime?          @db.Timestamp(6)
   del_by           String?            @db.VarChar
   del_on           DateTime?          @db.Timestamp(6)
+  metaphone        String?            @db.VarChar(255)
   product_category product_category[]
   product_feature  product_feature[]
   product_package  product_package[]

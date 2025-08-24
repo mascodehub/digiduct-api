@@ -1,6 +1,6 @@
 // const logger = require("../utils/logger");
 const generalResp = require("../utils/httpResp");
-const { convertByType } = require("../utils/datatype");
+const { convertByType, detectType } = require("../utils/datatype");
 const { convertMetaphone } = require("../utils/metaphone");
 const product = require("../services/product");
 
@@ -167,7 +167,7 @@ exports.update = async (req, res, next) => {
     };
 
     let result = await product.update(params);
-    
+
     if (!result) {
       throw {
         rc: generalResp.HTTP_BADREQUEST,
@@ -559,6 +559,7 @@ exports.listDetail = async (req, res, next) => {
   try {
     let params = {
       category_id: req.query?.category_id && detectType(req.query.category_id) == "int-string" ? convertByType(req.query.category_id) : null,
+      product_metaphone: req.query?.product_name && detectType(req.query.product_name) == "string" ? convertMetaphone(convertByType(req.query.product_name)) : null,
       limit: convertByType(req.query.limit),
       offset: convertByType(req.query.offset),
     };

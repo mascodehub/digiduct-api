@@ -312,29 +312,29 @@ exports.listDetail = async (params) => {
     where += ` and c.id = ${params.category_id} `;
   }
 
-  if (params.product_name != null) {
-    where += ` and pr.name like '%${params.product_name}%' `;
+  if (params.product_metaphone != null) {
+    where += ` and pr.metaphone like '%${params.product_metaphone}%' `;
   }
 
   let result = await prisma.$queryRawUnsafe(`
-  select
-      pr.id as product_id,
-      pr.name as product_name,
-      coalesce(pr.description, '-') as product_description,
-      pr.image_path as product_image_path,
-      c.id as category_id,
-      c.name as category_name,
-      pp.price,
-      (select case when count(1) > 0 then 1 else 0 end from digiduct.product_package where product_id = pr.id and status = 1 and stock <> 0) as available
-    from digiduct.product pr
-    inner join digiduct.product_category pc on pc.product_id = pr.id
-    inner join digiduct.category c on c.id = pc.category_id
-    inner join digiduct.product_package pp on pp.product_id = pr.id
-    where 1=1
-      ${where}
-    order by pr.name
-    limit ${params.limit}
-    offset ${params.offset}
+    select
+        pr.id as product_id,
+        pr.name as product_name,
+        coalesce(pr.description, '-') as product_description,
+        pr.image_path as product_image_path,
+        c.id as category_id,
+        c.name as category_name,
+        pp.price,
+        (select case when pp.status = 1 and pp.stock > 0 then 1 else 0 end) as available
+      from digiduct.product pr
+      inner join digiduct.product_category pc on pc.product_id = pr.id
+      inner join digiduct.category c on c.id = pc.category_id
+      inner join digiduct.product_package pp on pp.product_id = pr.id
+      where 1=1
+        ${where}
+      order by pr.name
+      limit ${params.limit}
+      offset ${params.offset}
   `);
 
   for (let val of result) {

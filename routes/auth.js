@@ -27,4 +27,10 @@ router.post(
   controllers.auth.changePassword
 );
 
+router.post(
+  "/verify",
+  middleware.checkGrants(constant.GRANTS_ROLE),
+  controllers.auth.verify
+);
+
 module.exports = router;

@@ -141,3 +141,29 @@ exports.changePassword = async (req, res, next) => {
 
   next();
 };
+
+exports.verify = async (req, res, next) => {
+  let response;
+
+  try {
+    response = {
+      rc: generalResp.HTTP_OK,
+      rd: "OK",
+      data: null,
+    };
+
+    res.locals.response = JSON.stringify(response);
+  } catch (error) {
+
+    response = {
+      rc: error.rc || 500,
+      rd: error.rd || "Some error occurred while retrieving data.",
+      data: null,
+    };
+
+    res.locals.status = error.rc || 500;
+    res.locals.response = JSON.stringify(response);
+  }
+
+  next();
+};

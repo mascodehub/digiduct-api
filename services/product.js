@@ -17,6 +17,16 @@ exports.list = async (params) => {
     orderBy: { name: "asc" },
   });
 
+  for (let val of result) {
+    let getFeatures = await prisma.product_feature.findMany({
+      where: {
+        product_id: val.id
+      },
+    });
+
+    val.feature = getFeatures.map((item) => item.name)
+  }
+
   return result;
 };
 
@@ -33,6 +43,16 @@ exports.detail = async (params) => {
       del_on: null,
     },
   });
+
+  for (let val of result) {
+    let getFeatures = await prisma.product_feature.findMany({
+      where: {
+        product_id: val.id
+      },
+    });
+
+    val.feature = getFeatures.map((item) => item.name)
+  }
 
   return result;
 };

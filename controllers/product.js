@@ -175,11 +175,6 @@ exports.update = async (req, res, next) => {
       };
     }
 
-    params = (params.feature).map((item) => ({
-      product_id: params.id,
-      name: item,
-    }));
-
     await product.featureCreate(params);
 
     response = {

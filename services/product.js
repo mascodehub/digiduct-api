@@ -317,11 +317,20 @@ exports.categoryDelete = async (params) => {
 };
 
 exports.featureCreate = async (params) => {
-  await prisma.product_feature.deleteMany({ where: { product_id: params.product_id } });
+  let result = false;
+  await prisma.product_feature.deleteMany({ where: { product_id: params.id } });
 
-  let result = await prisma.product_feature.createMany({
-    data: params,
-  });
+  if (params.feature.length > 0) {
+    params = (params.feature).map((item) => ({
+      product_id: params.id,
+      name: item,
+    }));
+
+    result = await prisma.product_feature.createMany({
+      data: params,
+    });
+  }
+
 
   return result;
 };
